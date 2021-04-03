@@ -12,19 +12,6 @@ pub fn capacity_literal(capacity: u8) -> LitInt {
     LitInt::new(&capacity.to_string(), Span::call_site())
 }
 
-/// Turns `capacity` into a type-level (`typenum`) integer
-pub fn capacity_typenum(capacity: u8, round_up_to_power_of_two: bool) -> TokenStream2 {
-    let capacity = if round_up_to_power_of_two {
-        capacity.checked_next_power_of_two().expect("UNREACHABLE")
-    } else {
-        capacity
-    };
-
-    let ident = Ident::new(&format!("U{}", capacity), Span::call_site());
-
-    quote!(rtic::export::consts::#ident)
-}
-
 /// Identifier for the free queue
 pub fn fq_ident(task: &Ident) -> Ident {
     Ident::new(&format!("{}_FQ", task.to_string()), Span::call_site())

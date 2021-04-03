@@ -58,15 +58,13 @@ pub fn codegen(app: &App, analysis: &Analysis, _extra: &Extra) -> Vec<TokenStrea
                 .iter()
                 .map(|(_name, task)| task.args.capacity)
                 .sum();
-            let n = util::capacity_typenum(cap, false);
+            let n = util::capacity_literal(cap);
             let tq_ty = quote!(rtic::export::TimerQueue<#mono_type, #t, #n>);
 
             items.push(quote!(
                 #[doc(hidden)]
                 static mut #tq: #tq_ty = rtic::export::TimerQueue(
-                    rtic::export::BinaryHeap(
-                        rtic::export::iBinaryHeap::new()
-                    )
+                    rtic::export::BinaryHeap::new()
                 );
             ));
 

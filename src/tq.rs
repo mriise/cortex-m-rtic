@@ -3,18 +3,16 @@ use crate::{
     Monotonic,
 };
 use core::cmp::Ordering;
-use heapless::{binary_heap::Min, ArrayLength, BinaryHeap};
+use heapless::{binary_heap::Min, BinaryHeap};
 
-pub struct TimerQueue<Mono, Task, N>(pub BinaryHeap<NotReady<Mono, Task>, N, Min>)
+pub struct TimerQueue<Mono, Task, const N: usize>(pub BinaryHeap<NotReady<Mono, Task>, Min, N>)
 where
     Mono: Monotonic,
-    N: ArrayLength<NotReady<Mono, Task>>,
     Task: Copy;
 
-impl<Mono, Task, N> TimerQueue<Mono, Task, N>
+impl<Mono, Task, const N: usize> TimerQueue<Mono, Task, N>
 where
     Mono: Monotonic,
-    N: ArrayLength<NotReady<Mono, Task>>,
     Task: Copy,
 {
     /// # Safety
